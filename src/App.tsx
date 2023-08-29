@@ -8,7 +8,7 @@ const App: React.FC = () => {
   );
 
   return (
-    <div style={{ backgroundColor }} className="min-h-screen">
+    <div style={{ backgroundColor }} className="h-screen">
       <Header />
 
       <Board />

@@ -17,16 +17,19 @@ const Header = () => {
 
   const links = [
     {
+      id: 1,
       title: "Completed Tasks",
-      link: "/",
+      to: "/completedtasks",
     },
     {
+      id: 2,
       title: "Deleted Tasks",
-      link: "/",
+      to: "/deletedtasks",
     },
     {
+      id: 3,
       title: "All Tasks",
-      link: "/",
+      to: "/",
     },
   ];
 
@@ -57,11 +60,11 @@ const Header = () => {
           open ? "left-[0px] top-16" : "left-[-1000px] top-0"
         }`}
       >
-        {links.map((link, index) => (
+        {links.map((link) => (
           // using index as array is static
-          <li key={index} className="p-4 font-mono">
+          <li key={link.id} className="p-4 font-mono">
             <a
-              href={link.link}
+              href={link.to}
               className="hover:text-green-500 duration-300 text-lg md:text-lg"
             >
               {link.title}
