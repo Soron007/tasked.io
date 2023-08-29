@@ -18,7 +18,7 @@ interface kanbanBoardType {
 
 const initialState: kanbanBoardType = {
   boards: [],
-  backgroundColor: "#ffffff",
+  backgroundColor: "green",
 };
 
 const kanbanSlice = createSlice({
@@ -43,9 +43,18 @@ const kanbanSlice = createSlice({
     setbackgroundColor: (state, action: PayloadAction<string>) => {
       state.backgroundColor = action.payload;
     },
+    deleteBoard: (state, action: PayloadAction<string>) => {
+      const boardIndex = state.boards.findIndex(
+        (board) => board.id === action.payload
+      );
+      if (boardIndex !== -1) {
+        state.boards.splice(boardIndex, 1);
+      }
+    },
   },
 });
 
-export const { addBoard, addTask, setbackgroundColor } = kanbanSlice.actions;
+export const { addBoard, addTask, setbackgroundColor, deleteBoard } =
+  kanbanSlice.actions;
 
 export default kanbanSlice.reducer;
