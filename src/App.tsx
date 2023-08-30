@@ -8,11 +8,12 @@ const App: React.FC = () => {
   );
 
   return (
-    <div style={{ backgroundColor }} className="h-screen">
+    <>
       <Header />
-
-      <Board />
-    </div>
+      <div style={{ backgroundColor }} className="min-h-[100vh] ">
+        <Board />
+      </div>
+    </>
   );
 };
 
