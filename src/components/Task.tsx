@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { addTask } from "../store/kanbanSlice";
+import { addTask, deleteTasks } from "../store/kanbanSlice";
 import { AppDispatch } from "../store/store";
 import { useDispatch } from "react-redux";
 
@@ -27,6 +27,10 @@ const Task = ({ boardId, tasks }: BoardProps) => {
       );
       setTaskText("");
     }
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    dispatch(deleteTasks({ boardId, taskId }));
   };
 
   return (
@@ -67,11 +71,8 @@ const Task = ({ boardId, tasks }: BoardProps) => {
       <div className="flex flex-col w-full">
         <ul>
           {tasks.map((task) => (
-            <>
-              <li
-                key={task.id}
-                className="mt-2 p-2 border-2 border-purple-500 flex items-center justify-between bg-slate-500/[0.6] rounded-lg duration-300 hover:scale-y-95 cursor-pointer"
-              >
+            <div key={task.id}>
+              <li className="mt-2 p-2 border-2 border-purple-500 flex items-center justify-between bg-slate-500/[0.6] rounded-lg duration-300 hover:scale-y-95 cursor-pointer">
                 <span className="overflow-auto font-mono font-bold text-2xl">
                   {task.text}
                 </span>
@@ -83,6 +84,7 @@ const Task = ({ boardId, tasks }: BoardProps) => {
                     strokeWidth={1.5}
                     stroke="currentColor"
                     className="w-6 h-6 text-white"
+                    onClick={() => handleDeleteTask(task.id)}
                   >
                     <path
                       strokeLinecap="round"
@@ -92,7 +94,7 @@ const Task = ({ boardId, tasks }: BoardProps) => {
                   </svg>
                 </span>
               </li>
-            </>
+            </div>
           ))}
         </ul>
       </div>

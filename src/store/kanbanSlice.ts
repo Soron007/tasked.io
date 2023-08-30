@@ -51,10 +51,33 @@ const kanbanSlice = createSlice({
         state.boards.splice(boardIndex, 1);
       }
     },
+    deleteTasks: (
+      state,
+      action: PayloadAction<{ boardId: string; taskId: string }>
+    ) => {
+      const board = state.boards.find((board) => {
+        return board.id === action.payload.boardId;
+      });
+
+      if (board) {
+        const taskIndex = board.tasks.findIndex((task) => {
+          return task.id === action.payload.taskId;
+        });
+
+        if (taskIndex !== -1) {
+          board.tasks.splice(taskIndex, 1);
+        }
+      }
+    },
   },
 });
 
-export const { addBoard, addTask, setbackgroundColor, deleteBoard } =
-  kanbanSlice.actions;
+export const {
+  addBoard,
+  addTask,
+  setbackgroundColor,
+  deleteBoard,
+  deleteTasks,
+} = kanbanSlice.actions;
 
 export default kanbanSlice.reducer;
