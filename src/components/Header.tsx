@@ -55,61 +55,64 @@ const Header = () => {
         </span>
       </div>
 
-      <ul
-        className={`md:flex md:items-center md:pb-0 pb-6 absolute md:static bg-transparent/[0.5] text-white space-x-4 md:z-auto z-[-1] left-[-1000px] top-0 w-full md:w-auto text-center transition-all duration-500 ease-in ${
-          open ? "left-[0px] top-16" : "left-[-1000px] top-0"
-        }`}
-      >
-        {links.map((link) => (
-          // using index as array is static
-          <li key={link.id} className="p-4 font-mono">
-            <a
-              href={link.to}
-              className="hover:text-green-500 duration-300 text-lg md:text-lg"
-            >
-              {link.title}
-            </a>
-          </li>
-        ))}
-      </ul>
+      <div>
+        <ul
+          className={`md:flex md:items-center md:pb-0 pb-6 absolute md:static bg-transparent/[0.5] text-white space-x-4 md:z-auto z-[-1] left-[-1000px] top-0 w-full md:w-auto text-center transition-all duration-500 ease-in ${
+            open ? "left-[0px] top-16" : "left-[-1000px] top-0"
+          }`}
+        >
+          {links.map((link) => (
+            <li key={link.id} className="p-4 font-mono">
+              <a
+                href={link.to}
+                className="hover:text-green-500 duration-300 text-lg md:text-lg"
+              >
+                {link.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-      <button className="md:hidden text-white" onClick={toggleMenu}>
-        {open ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-            />
-          </svg>
-        )}
-      </button>
-      <button
-        onClick={changeBackgroundColor}
-        className="h-6 w-6 rounded-full bg-white translate-y-[600px]"
-      ></button>
+      <div className="flex items-center">
+        <button
+          onClick={changeBackgroundColor}
+          className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-white mr-2 lg:mr-0"
+        ></button>
+        <button className="md:hidden text-white" onClick={toggleMenu}>
+          {open ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+              className="w-6 h-6"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
     </header>
   );
 };
