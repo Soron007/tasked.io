@@ -1,9 +1,11 @@
 import kanbanReducer from "./kanbanSlice";
+import selectionReducer from "./boardSelectionSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 export const store = configureStore({
   reducer: {
     kanban: kanbanReducer,
+    selection: selectionReducer,
   },
 });
 
