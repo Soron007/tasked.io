@@ -2,15 +2,35 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addBoard, deleteBoard } from "../store/kanbanSlice";
 import { AppDispatch, RootState } from "../store/store";
+import {
+  selectBoard,
+  deselectBoard,
+  clearSelection,
+} from "../store/boardSelectionSlice";
+import { GrRadialSelected } from "react-icons/gr";
+import { BsCircle } from "react-icons/bs";
+import { AiTwotoneDelete } from "react-icons/ai";
 
 import Task from "./Task";
 
 const Board: React.FC = () => {
-  const dispatch: AppDispatch = useDispatch();
-  const boards = useSelector((state: RootState) => state.kanban.boards);
-
   const [boardTitle, setBoardTitle] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+
+  const dispatch: AppDispatch = useDispatch();
+
+  const boards = useSelector((state: RootState) => state.kanban.boards);
+
+  const selectedBoards = useSelector(
+    (state: RootState) => state.selection.selectedBoards
+  );
+
+  const handleDeleteSelected = () => {
+    selectedBoards.forEach((boards) => {
+      dispatch(deleteBoard(boards));
+    });
+    dispatch(clearSelection());
+  };
 
   const handleAddBoard = () => {
     if (boardTitle.trim() !== "") {
@@ -70,11 +90,21 @@ const Board: React.FC = () => {
           />
         </svg>
       </div>
+
       {/* Error message over here */}
       {error && (
         <div className="text-red-500 translate-y-[2px] translate-x-[-30px] mb-5">
           {error}
         </div>
+      )}
+
+      {selectedBoards.length > 0 && boards.length > 0 && (
+        <span
+          onClick={handleDeleteSelected}
+          className="hover:text-red-500 cursor-pointer"
+        >
+          <AiTwotoneDelete className="h-8 w-8" />
+        </span>
       )}
 
       {/* Boards displayed over here */}
@@ -92,7 +122,7 @@ const Board: React.FC = () => {
               </span>
 
               <span
-                className="mr-2"
+                className="mr-2 cursor-pointer"
                 onClick={() => handleDeleteBoard(board.id)}
               >
                 <svg
@@ -114,7 +144,31 @@ const Board: React.FC = () => {
 
             <div className="border-2 border-gray-400 w-[80%] mt-3"></div>
 
+            {/* Below are the individual tasks in each board */}
+
             <Task boardId={board.id} tasks={board.tasks} />
+
+            {/* Below is the button to select and deselect individual boards */}
+            <button
+              onClick={() => {
+                if (selectedBoards.includes(board.id)) {
+                  dispatch(deselectBoard(board.id));
+                } else {
+                  dispatch(selectBoard(board.id));
+                }
+              }}
+              className={`mt-2 py-1 px-2 rounded-md ${
+                selectedBoards.includes(board.id)
+                  ? "bg-green-500"
+                  : "text-gray-300"
+              }`}
+            >
+              {selectedBoards.includes(board.id) ? (
+                <GrRadialSelected className="text-green-600" />
+              ) : (
+                <BsCircle />
+              )}
+            </button>
           </div>
         ))}
       </div>
