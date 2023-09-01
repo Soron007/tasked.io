@@ -2,8 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addTask, deleteTasks, editTasks } from "../store/kanbanSlice";
 import { AppDispatch } from "../store/store";
-import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
-import { MdCancel } from "react-icons/md";
+import {
+  AiTwotoneDelete,
+  AiFillEdit,
+  AiOutlineArrowRight,
+} from "react-icons/ai";
 
 interface Task {
   id: string;
@@ -99,7 +102,7 @@ const Task = ({ boardId, tasks }: BoardProps) => {
                 <span className="flex ml-2 gap-2">
                   {editingTaskId === task.id ? (
                     <button onClick={() => handleEditTask(task.id, editText)}>
-                      <MdCancel />
+                      <AiOutlineArrowRight />
                     </button>
                   ) : (
                     <button onClick={() => setEditingTaskId(task.id)}>

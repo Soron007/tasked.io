@@ -160,7 +160,7 @@ const Board: React.FC = () => {
               <span className="cursor-pointer flex gap-2">
                 {editingBoardId === board.id ? (
                   <button onClick={() => setEditingBoardId(null)}>
-                    <MdCancel className="text-white h-6 w-6 ml-2 md:ml-0" />
+                    <MdCancel className="text-white h-6 w-6 ml-2 md:ml-2" />
                   </button>
                 ) : (
                   <button onClick={() => setEditingBoardId(board.id)}>
