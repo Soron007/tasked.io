@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addBoard, deleteBoard } from "../store/kanbanSlice";
+import { addBoard, deleteBoard, editBoardTitle } from "../store/kanbanSlice";
 import { AppDispatch, RootState } from "../store/store";
 import {
   selectBoard,
@@ -9,13 +9,18 @@ import {
 } from "../store/boardSelectionSlice";
 import { GrRadialSelected } from "react-icons/gr";
 import { BsCircle } from "react-icons/bs";
-import { AiTwotoneDelete } from "react-icons/ai";
+import { AiTwotoneDelete, AiFillEdit } from "react-icons/ai";
+import { MdCancel } from "react-icons/md";
 
 import Task from "./Task";
 
 const Board: React.FC = () => {
   const [boardTitle, setBoardTitle] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
+  const [editingBoardId, setEditingBoardId] = useState<string | null>(null);
+  const [editedBoardTitles, setEditedBoardTitles] = useState<{
+    [boardId: string]: string;
+  }>({});
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -26,8 +31,8 @@ const Board: React.FC = () => {
   );
 
   const handleDeleteSelected = () => {
-    selectedBoards.forEach((boards) => {
-      dispatch(deleteBoard(boards));
+    selectedBoards.forEach((boardId) => {
+      dispatch(deleteBoard(boardId));
     });
     dispatch(clearSelection());
   };
@@ -43,14 +48,24 @@ const Board: React.FC = () => {
     }
   };
 
+  const handleDeleteBoard = (boardId: string) => {
+    dispatch(deleteBoard(boardId));
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
       handleAddBoard();
     }
   };
 
-  const handleDeleteBoard = (boardId: string) => {
-    dispatch(deleteBoard(boardId));
+  const handleEditBoardTitle = (boardId: string) => {
+    const newTitle =
+      editedBoardTitles[boardId] ||
+      boards.find((board) => board.id === boardId)?.title ||
+      "";
+
+    dispatch(editBoardTitle({ boardId, newTitle }));
+    setEditingBoardId(null);
   };
 
   return (
@@ -69,7 +84,7 @@ const Board: React.FC = () => {
         />
         <button
           onClick={handleAddBoard}
-          className="bg-slate-300 text-black rounded-md p-2 hover:bg-green-600 hidden md:block md:text-xl "
+          className="bg-slate-300 text-black rounded-md p-2 hover:bg-green-600 hidden md:block md:text-xl"
         >
           + Board
         </button>
@@ -112,26 +127,54 @@ const Board: React.FC = () => {
         {boards.map((board) => (
           <div
             className={`rounded-md border-2 ${
-              error ? "border-red-600" : "border-green-600"
+              error ? "border-red-600" : "border-black"
             } md:m-4 md:p-4 m-2 p-2 flex flex-col items-start`}
             key={board.id}
           >
+            {/* edit, and delete board functions below */}
             <div className="flex w-full justify-between items-center">
-              <span className="text-black font-mono font-semibold text-2xl md:text-3xl">
-                {board.title}
-              </span>
+              {editingBoardId === board.id ? (
+                <input
+                  type="text"
+                  value={editedBoardTitles[board.id] || ""}
+                  className="p-2 rounded-md outline-none"
+                  placeholder="Enter new title"
+                  onChange={(e) =>
+                    setEditedBoardTitles({
+                      ...editedBoardTitles,
+                      [board.id]: e.target.value,
+                    })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleEditBoardTitle(board.id);
+                    }
+                  }}
+                />
+              ) : (
+                <span className="text-black font-mono font-semibold text-2xl md:text-3xl">
+                  {board.title}
+                </span>
+              )}
 
-              <span
-                className="mr-2 cursor-pointer"
-                onClick={() => handleDeleteBoard(board.id)}
-              >
+              <span className="cursor-pointer flex gap-2">
+                {editingBoardId === board.id ? (
+                  <button onClick={() => setEditingBoardId(null)}>
+                    <MdCancel className="text-white h-6 w-6 ml-2 md:ml-0" />
+                  </button>
+                ) : (
+                  <button onClick={() => setEditingBoardId(board.id)}>
+                    <AiFillEdit className="text-white h-6 w-6" />
+                  </button>
+                )}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-5 h-5 text-white"
+                  className="w-6 h-6 text-white"
+                  onClick={() => handleDeleteBoard(board.id)}
                 >
                   <path
                     strokeLinecap="round"
@@ -142,7 +185,7 @@ const Board: React.FC = () => {
               </span>
             </div>
 
-            <div className="border-2 border-gray-400 w-[80%] mt-3"></div>
+            <div className="border-2 border-gray-800 w-[80%] mt-3"></div>
 
             {/* Below are the individual tasks in each board */}
 
@@ -164,9 +207,9 @@ const Board: React.FC = () => {
               }`}
             >
               {selectedBoards.includes(board.id) ? (
-                <GrRadialSelected className="text-green-600" />
+                <GrRadialSelected className="text-black" />
               ) : (
-                <BsCircle />
+                <BsCircle className="text-black" />
               )}
             </button>
           </div>
