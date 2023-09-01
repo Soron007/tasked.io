@@ -18,7 +18,7 @@ interface kanbanBoardType {
 
 const initialState: kanbanBoardType = JSON.parse(
   localStorage.getItem("kanbanState") ||
-    '{"boards":[],"backgroundColor":"green"}'
+    '{"boards":[],"backgroundColor":"white"}'
 );
 
 const kanbanSlice = createSlice({
