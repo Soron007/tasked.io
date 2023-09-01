@@ -70,7 +70,7 @@ const Header = () => {
             <li key={link.id} className="p-4 font-mono">
               <a
                 href={link.to}
-                className="hover:text-green-500 duration-300 text-lg md:text-lg"
+                className="hover:text-green-500 duration-300 text-xl md:text-xl"
               >
                 {link.title}
               </a>
@@ -80,9 +80,11 @@ const Header = () => {
       </div>
 
       <div className="flex items-center">
+        <span className="text-white mr-1 text-xl font-mono">Color:</span>
+
         <button
           onClick={changeBackgroundColor}
-          className="h-4 w-4 md:h-6 md:w-6 rounded-full mr-2 lg:mr-0"
+          className="h-5 w-5 md:h-6 md:w-6 rounded-full mr-2 lg:mr-0"
           style={{ backgroundColor: btnColor }}
         ></button>
         <button className="md:hidden text-white" onClick={toggleMenu}>
