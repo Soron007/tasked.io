@@ -24,12 +24,12 @@ const Header = () => {
     {
       id: 1,
       title: "Completed Tasks",
-      to: "/completedtasks",
+      to: "/",
     },
     {
       id: 2,
       title: "Deleted Tasks",
-      to: "/deletedtasks",
+      to: "/",
     },
     {
       id: 3,
