@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setbackgroundColor } from "../store/kanbanSlice";
+import { RootState } from "../store/store";
 
 const Header = () => {
   const dispatch = useDispatch();
-
+  const backgroundColor = useSelector(
+    (state: RootState) => state.kanban.backgroundColor
+  );
+  const [open, setOpen] = useState<boolean>(false);
+  const [btnColor, setBtnColor] = useState<string>(backgroundColor);
   const changeBackgroundColor = () => {
     const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+    setBtnColor(randomColor);
     dispatch(setbackgroundColor(randomColor));
   };
-  const [open, setOpen] = useState(false);
 
   const toggleMenu = () => {
     setOpen(!open);
@@ -77,7 +82,8 @@ const Header = () => {
       <div className="flex items-center">
         <button
           onClick={changeBackgroundColor}
-          className="h-4 w-4 md:h-6 md:w-6 rounded-full bg-white mr-2 lg:mr-0"
+          className="h-4 w-4 md:h-6 md:w-6 rounded-full mr-2 lg:mr-0"
+          style={{ backgroundColor: btnColor }}
         ></button>
         <button className="md:hidden text-white" onClick={toggleMenu}>
           {open ? (
